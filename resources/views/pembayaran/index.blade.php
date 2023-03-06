@@ -21,7 +21,8 @@
                 <tr>
                     <th class="col-md-1">No</th>
                     <th class="col-md-2">Id Pembayaran</th>
-                    <th class="col-md-3">NIS</th>
+                    <th class="col-md-3">Id Petugas</th>
+                    <th class="col-md-3">Id Siswa</th>
                     <th class="col-md-2">Tanggal Bayar</th>
                     <th class="col-md-2">Bulan Dibayar</th>
                     <th class="col-md-2">Tahun Dibayar</th>
@@ -38,12 +39,14 @@
                     <td>{{ $i }}</td>
                     <td>{{ $item->id_pembayaran}}</td>
                     <td>{{ $item->id_petugas }}</td>
-                    <td>{{ $item->nis }}</td>
-                    <td>{{ $item->tgl_dibayar }}</td>
+                    <td>{{ $item->id_siswa }}</td>
+                    <td>{{ $item->tgl_bayar }}</td>
                     <td>{{ $item->bulan_dibayar }}</td>
                     <td>{{ $item->tahun_dibayar }}</td>
                     <td>{{ $item->id_spp }}</td>
-                    <td>{{ $item->jumlah_bayar }}</td>
+                    <td>Rp.{{ number_format($item->jumlah_bayar) }}</td>
+                    <td><button>selesai</button> </td>
+        
                     <td>
                         <a href='{{ url('pembayaran/'.$item->id_pembayaran. '/edit')}}' class="btn btn-warning btn-sm mb-2">Edit</a>
                         <form onsubmit="return confirm('Yakin akan menghapus data?')" class="d-inline" action="{{ url('pembayaran/'.$item->id_pembayaran)}}" method="post">

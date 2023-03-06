@@ -20,6 +20,7 @@
             <thead>
                 <tr>
                     <th class="col-md-1">No</th>
+                    <th class="col-md-2">Id Siswa</th>
                     <th class="col-md-2">NIS</th>
                     <th class="col-md-3">Nama</th>
                     <th class="col-md-2">Kelas</th>
@@ -34,6 +35,7 @@
                 @foreach ($data as $item)
                 <tr>
                     <td>{{ $i }}</td>
+                    <td>{{ $item->id_siswa }}</td>
                     <td>{{ $item->nis }}</td>
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->kelas->nama_kelas }}</td>
@@ -41,12 +43,13 @@
                     <td>{{ $item->no_telp }}</td>
                     <td>{{ $item->id_spp }}</td>
                     <td>
-                        <a href='{{ url('siswa/'.$item->nis. '/edit')}}' class="btn btn-warning btn-sm mb-2">Edit</a>
-                        <form onsubmit="return confirm('Yakin akan menghapus data?')" class="d-inline" action="{{ url('siswa/'.$item->nis)}}" method="post">
+                        <a href='{{ url('siswa/'.$item->id_siswa. '/edit')}}' class="btn btn-warning btn-sm mb-2">Edit</a>
+                        <form onsubmit="return confirm('Yakin akan menghapus data?')" class="d-inline" action="{{ url('siswa/'.$item->id_siswa)}}" method="post">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" name="submit" class="btn btn-danger btn-sm">Del</button>
+                            <button type="submit" name="submit" class="btn btn-danger btn-sm mb-2">Del</button>
                         </form>
+                        <a href="{{route('print.show', $item->id_siswa)}}"class="btn btn-primary btn-sm"> Print</a>
                     </td>
                 </tr>
                 <?php $i++ ?>

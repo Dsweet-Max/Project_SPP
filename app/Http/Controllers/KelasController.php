@@ -49,11 +49,12 @@ class KelasController extends Controller
         session::flash('id_kelas', $request->id_kelas);
         
         $request->validate([
-            'id_kelas'=> 'required',
+            'id_kelas'=> 'required|unique:kelas,id_kelas',
             'nama_kelas'=> 'required',
             'kompetensi_keahlian'=> 'required',
         ],           
-        [
+        [   
+            'id_kelas.unique' => 'Id kelas tidak boleh sama',
             'id_kelas.required' => 'Id kelas tidak boleh kosong',
             'nama_kelas.required' => 'Nama kelas tidak boleh kosong',
             'kompetensi_keahlian.required' => 'Kompetensi keahlian tidak boleh kosong',

@@ -14,12 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('pembayaran', function (Blueprint $table) {
-            $table->string('id_pembayaran')->primary();
-            $table->string('id_petugas')->unique();
-            $table->string('nis');
-            $table->string('nama');
+            $table->id('id_pembayaran');
+            $table->integer('id_petugas');
+            $table->integer('id_siswa');
             $table->date('tgl_bayar');
-            $table->integer('bulan_dibayar');
+            $table->string('bulan_dibayar');
             $table->integer('tahun_dibayar');
             $table->integer('id_spp');
             $table->integer('jumlah_bayar');

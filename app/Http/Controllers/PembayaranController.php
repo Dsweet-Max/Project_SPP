@@ -22,6 +22,7 @@ class PembayaranController extends Controller
             $data = Pembayaran::where('id_pembayaran', 'like', "%$katakunci%")
                 ->orWhere('id_petugas', 'like', "%$katakunci%")
                 ->orWhere('nis', 'like', "%$katakunci%")
+                ->orWhere('nama', 'like', "%$katakunci%")
                 ->orWhere('tgl_dibayar', 'like', "%$katakunci%")
                 ->orWhere('bulan_dibayar', 'like', "%$katakunci%")
                 ->orWhere('tahun_dibayar', 'like', "%$katakunci%")
@@ -52,33 +53,39 @@ class PembayaranController extends Controller
      */
     public function store(Request $request)
     {
-        session::flash('nis', $request->nis);
+        session::flash('id_pembayaran', $request->id_pembayaran);
         
         $request->validate([
-            'nis'=> 'required|numeric|unique:Pembayaran,nis',
-            'name'=> 'required',
-            'id_kelas'=> 'required',
-            'alamat'=> 'required',
-            'no_telp'=> 'required',
+            'id_pembayaran'=> 'required|numeric|unique:Pembayaran,id_pembayaran',
+            'id_petugas'=> 'required',
+            'id_siswa'=> 'required',
+            'tgl_bayar'=> 'required',
+            'bulan_dibayar'=> 'required',
+            'tahun_dibayar'=> 'required',
             'id_spp'=> 'required',
+            'jumlah_bayar'=> 'required',
         ],
-        [
-            'nis.unique' => 'NIS tidak boleh sama',
-            'nis.required' => 'NIS tidak boleh kosong',
-            'name.required' => 'Nama tidak boleh kosong',
-            'id_kelas.required' => 'id kelas tidak boleh kosong',
-            'alamat.required' => 'Alamat tidak boleh kosong',
-            'no_telp.required' => 'No Telepon tidak boleh kosong',
-            'id_spp.required' => 'id spp tidak boleh kosong',
+        [   
+            'id_pembayaran.unique' => 'Id pembayaran tidak boleh sama',
+            'id_pembayaran.required' => 'Id pembayaran tidak boleh kosong',
+            'id_petugas.required' => 'Id petugas tidak boleh kosong',
+            'id_siswa.required' => 'Id siswa tidak boleh kosong',
+            'tgl_bayar.required' => 'Tanggal bayar tidak boleh kosong',
+            'bulan_dibayar.required' => 'Bulan dibayar tidak boleh kosong',
+            'tahun_dibayar.required' => 'Tahun dibayar tidak boleh kosong',
+            'id_spp.required' => 'Id spp tidak boleh kosong',
+            'jumlah_bayar.required' => 'Jumlah bayar tidak boleh kosong',
         ] 
         );
         $data = [
-            'nis'=>$request->nis,
-            'name'=>$request->name,
-            'id_kelas'=>$request->id_kelas,
-            'alamat'=>$request->alamat,
-            'no_telp'=>$request->no_telp,
+            'id_pembayaran'=>$request->id_pembayaran,
+            'id_petugas'=>$request->id_petugas,
+            'id_siswa'=>$request->id_siswa,
+            'tgl_bayar'=>$request->tgl_bayar,
+            'bulan_dibayar'=>$request->bulan_dibayar,
+            'tahun_dibayar'=>$request->tahun_dibayar,
             'id_spp'=>$request->id_spp,
+            'jumlah_bayar'=>$request->jumlah_bayar,
         ];
         Pembayaran::create($data);
         return redirect()->to('pembayaran')->with('success', 'Berhasil menambahkan data');
@@ -103,7 +110,7 @@ class PembayaranController extends Controller
      */
     public function edit($id)
     {
-        $data = pembayaran::where('nis', $id)->first();
+        $data = pembayaran::where('id_pembayaran', $id)->first();
         return view('pembayaran.edit')->with('data', $data);
     }
 
@@ -117,28 +124,35 @@ class PembayaranController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name'=> 'required',
-            'id_kelas'=> 'required',
-            'alamat'=> 'required',
-            'no_telp'=> 'required',
+            'id_petugas'=> 'required',
+            'id_siswa'=> 'required',
+            'tgl_dibayar'=> 'required',
+            'bulan_dibayar'=> 'required',
+            'tahun_dibayar'=> 'required',
             'id_spp'=> 'required',
+            'jumlah_bayar'=> 'required',
         ],
-        [
-            'name.required' => 'Nama tidak boleh kosong',
-            'id_kelas.required' => 'id kelas tidak boleh kosong',
-            'alamat.required' => 'Alamat tidak boleh kosong',
-            'no_telp.required' => 'No Telepon tidak boleh kosong',
-            'id_spp.required' => 'id spp tidak boleh kosong',
-        ]);
+        [   
+            'id_petugas.required' => 'Id petugas tidak boleh kosong',
+            'id_siswa.required' => 'Id siswa tidak boleh kosong',
+            'tgl_dibayar.required' => 'Tanggal dibayar tidak boleh kosong',
+            'bulan_dibayar.required' => 'Bulan dibayar tidak boleh kosong',
+            'tahun_dibayar.required' => 'Tahun dibayar tidak boleh kosong',
+            'id_spp.required' => 'Id spp tidak boleh kosong',
+            'jumlah_bayar.required' => 'Jumlah bayar tidak boleh kosong',
+        ] 
+        );
         $data = [
-            'name'=>$request->name,
-            'id_kelas'=>$request->id_kelas,
-            'alamat'=>$request->alamat,
-            'no_telp'=>$request->no_telp,
+            'id_petugas'=>$request->id_petugas,
+            'id_siswa'=>$request->id_siswa,
+            'tgl_dibayar'=>$request->tgl_dibayar,
+            'bulan_dibayar'=>$request->bulan_dibayar,
+            'tahun_dibayar'=>$request->tahun_dibayar,
             'id_spp'=>$request->id_spp,
+            'jumlah_bayar'=>$request->jumlah_bayar,
         ];
 
-        pembayaran::where('nis', $id)->update($data);
+        pembayaran::where('id_pembayaran', $id)->update($data);
         return redirect()->to('pembayaran')->with('success', 'Berhasil melakukan update data');
     }
 
@@ -150,7 +164,7 @@ class PembayaranController extends Controller
      */
     public function destroy($id)
     {
-        pembayaran::where('nis', $id)->delete();
+        pembayaran::where('id_pembayaran', $id)->delete();
         return redirect()->to('pembayaran')->with('success', 'Berhasil melakukan delete data');
     }
 }

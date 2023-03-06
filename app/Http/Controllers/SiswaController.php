@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kelas;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 use SebastianBergmann\Template\Template;
@@ -28,7 +29,6 @@ class SiswaController extends Controller
                 ->paginate($jumlahbaris);             
         } else {
             $data = siswa::orderBy('nis', 'desc')->paginate($jumlahbaris);
-            // $data = siswa::with('kelas')->paginate($jumlahbaris);
         }
         return view('siswa.index')->with('data', $data);
     }
@@ -40,7 +40,8 @@ class SiswaController extends Controller
      */
     public function create()
     {
-        return view('siswa.create');
+        $data = Kelas::all();
+        return view('siswa.create', compact('data'));
     }
 
     /**
@@ -51,17 +52,20 @@ class SiswaController extends Controller
      */
     public function store(Request $request)
     {
-        session::flash('nis', $request->nis);
+        session::flash('id_siswa', $request->id_siswa);
         
         $request->validate([
-            'nis'=> 'required|numeric|unique:siswa,nis',
+            'id_siswa'=> 'required|unique:siswa,id_siswa',
+            'nis'=> 'required|unique:siswa,nis',
             'name'=> 'required',
             'id_kelas'=> 'required',
             'alamat'=> 'required',
             'no_telp'=> 'required',
             'id_spp'=> 'required',
         ],
-        [
+        [   
+            'id_siswa.unique' => 'Id siswa tidak boleh sama',
+            'id_siswa.required' => 'Id siswa  tidak boleh kosong',
             'nis.unique' => 'NIS tidak boleh sama',
             'nis.required' => 'NIS tidak boleh kosong',
             'name.required' => 'Nama tidak boleh kosong',
@@ -72,12 +76,14 @@ class SiswaController extends Controller
         ] 
         );
         $data = [
+            'id_siswa'=>$request->id_siswa,
             'nis'=>$request->nis,
             'name'=>$request->name,
             'id_kelas'=>$request->id_kelas,
             'alamat'=>$request->alamat,
             'no_telp'=>$request->no_telp,
             'id_spp'=>$request->id_spp,
+            
         ];
         Siswa::create($data);
         return redirect()->to('siswa')->with('success', 'Berhasil menambahkan data');
@@ -102,8 +108,9 @@ class SiswaController extends Controller
      */
     public function edit($id)
     {
-        $data = siswa::where('nis', $id)->first();
-        return view('siswa.edit')->with('data', $data);
+        $data = siswa::find($id);
+        $kelas = kelas::all();
+        return view('siswa.edit', compact('data', 'kelas'));
     }
 
     /**
@@ -116,28 +123,32 @@ class SiswaController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'nis'=> 'required',
             'name'=> 'required',
             'id_kelas'=> 'required',
             'alamat'=> 'required',
             'no_telp'=> 'required',
             'id_spp'=> 'required',
         ],
-        [
+        [   
+            'nis.required' => 'NIS tidak boleh kosong',
             'name.required' => 'Nama tidak boleh kosong',
             'id_kelas.required' => 'id kelas tidak boleh kosong',
             'alamat.required' => 'Alamat tidak boleh kosong',
             'no_telp.required' => 'No Telepon tidak boleh kosong',
             'id_spp.required' => 'id spp tidak boleh kosong',
-        ]);
+        ] 
+        );
         $data = [
+            'nis'=>$request->nis,
             'name'=>$request->name,
             'id_kelas'=>$request->id_kelas,
             'alamat'=>$request->alamat,
             'no_telp'=>$request->no_telp,
             'id_spp'=>$request->id_spp,
+            
         ];
-
-        Siswa::where('nis', $id)->update($data);
+        Siswa::where('id_siswa', $id)->update($data);
         return redirect()->to('siswa')->with('success', 'Berhasil melakukan update data');
     }
 
@@ -149,7 +160,7 @@ class SiswaController extends Controller
      */
     public function destroy($id)
     {
-        Siswa::where('nis', $id)->delete();
+        Siswa::where('id_siswa', $id)->delete();
         return redirect()->to('siswa')->with('success', 'Berhasil melakukan delete data');
     }
 }

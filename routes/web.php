@@ -7,6 +7,8 @@ use App\Http\Controllers\KelasController;
 use App\Http\Controllers\SppController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\PrintController;
 use GuzzleHttp\Middleware;
 
 /*
@@ -35,6 +37,7 @@ use GuzzleHttp\Middleware;
             Route::resource('spp', SppController::class);
             Route::resource('petugas', PetugasController::class);
             Route::resource('pembayaran', PembayaranController::class);
+            Route::resource('print', PrintController::class);
         });
 
         Route::group(['middleware' => ['cekUserLogin:2']], function(){  

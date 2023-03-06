@@ -66,13 +66,17 @@
                                 Data SPP
                             </a>
                             <div class="sb-sidenav-menu-heading">Transaksi</div>
-                            <a class="nav-link" href="charts.html">
+                            <a class="nav-link" href="{{ url('pembayaran')}}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                                 Pembayaran
                             </a>
-                            <a class="nav-link" href="tables.html">
+                            <a class="nav-link" href="{{ url('history')}}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 History
+                            </a>
+                            <a class="nav-link" href="{{ url('laporan')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                               Laporan
                             </a>
                         </div>
                     </div>

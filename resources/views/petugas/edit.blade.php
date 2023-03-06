@@ -2,11 +2,11 @@
 @section('content')
 <title> Edit Data Petugas</title>
       <!-- START FORM -->
-      <form action='{{ url('Petugas/' .$data->id_petugas) }}' method='post'>
+      <form action='{{ url('petugas/' .$data->id_petugas) }}' method='post'>
       @csrf
         @method('PUT')
         <div class="my-3 p-3 bg-body rounded shadow-sm">
-            <a href="{{ url('Petugas')}}" class="btn btn-secondary"> kembali </a>
+            <a href="{{ url('petugas')}}" class="btn btn-secondary"> kembali </a>
             <div class="mb-3 row">
                 <label for="id_petugas" class="col-sm-2 col-form-label">Id Petugas</label>
                 <div class="col-sm-10">
